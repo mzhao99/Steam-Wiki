@@ -1,1 +1,1 @@
-# Nintendo-Game-Price-Tracker
+# Steam-Game-Price-Tracker
