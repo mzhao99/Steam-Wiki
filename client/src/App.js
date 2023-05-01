@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
+import Region from "./pages/Region";
+
+export const CurrencyContext = React.createContext(null);
 
 function App() {
-    const [backendData, setBackendData] = useState([{}]);
+    // const [backendData, setBackendData] = useState([{}]);
 
-    useEffect(() => {
-        fetch("api")
-        .then((response) => response.json())
-        .then((data) => setBackendData(data));
-    }, []);
+    // useEffect(() => {
+    //     fetch("api")
+    //     .then((response) => response.json())
+    //     .then((data) => setBackendData(data));
+    // }, []);
+    const [currency, setCurrency] = useState(null);
+
     return (
         <div>
-        {typeof backendData.users === "undefined" ? (
+            <CurrencyContext.Provider value={{ currency: currency, setCurrency: setCurrency }}>
+                <Region />
+            </CurrencyContext.Provider>
+            
+        {/* {typeof backendData.users === "undefined" ? (
             <p>Loading...</p>
         ) : (
             backendData.users.map((user, i) => (
@@ -18,7 +27,7 @@ function App() {
                 {user}
             </p>
             ))
-        )}
+        )} */}
         </div>
     );
 }
