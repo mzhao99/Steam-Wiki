@@ -1,3 +1,4 @@
+// Entry point, starts Express app
 const express = require('express');
 const app = express();
 
