@@ -1,12 +1,15 @@
 // Entry point, starts Express app
 const express = require('express');
 const dotenv = require('dotenv').config({path: '../.env'});
-const connectDB = require('./config/db');
 
 // Create express app
 const app = express();
 
+// Parse JSON bodies
+app.use(express.json()); 
+
 // Connect to MongoDB
+const connectDB = require('./config/db');
 connectDB();
 
 // Require routes.js

@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const gameSchema = mongoose.Schema({
-    id: {
+    game_id: {
         type: Number,
         unique: true,
         require: true
@@ -11,18 +11,20 @@ const gameSchema = mongoose.Schema({
         type: String,
         require: true
     },
-    current_price: {
+    final_price: {
         type: Number,
         require: true
     },
-    sale_price: Number,
-    normal_price: Number,
+    initial_price: Number,
+    discount_rate: Number,
     release_date: {
         type: String,
         require: true
     },
     genres: [String],
-    platform: [String]
+    platforms: [String],
+    categories: [String],
+    image_url: String
 });
 
 module.exports = mongoose.model('Game', gameSchema);
