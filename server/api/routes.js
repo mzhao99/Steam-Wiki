@@ -3,14 +3,21 @@ const express = require('express');
 const router = express.Router();
 
 // Import controllers
-const gamesController = require('./controllers/games');
-const usersController = require('./controllers/users');
-const loginController = require('./controllers/login');
+const { getAll, search, lookup } = require('./controllers/games');
+const { createUser, getFavorites, addToFavorites, removeFavorite } = require('./controllers/users');
+const { loginAuth } = require('./controllers/login');
 
 // Game routes 
-// router.get('/games/search', gamesController.search);
-router.use('/games', gamesController);
-router.use('/users/:user_id', usersController);
-router.use('/login', loginController);
+router.get('/games', getAll);
+router.get('/games/search', search);
+router.get('/games/:game_id', lookup);
+
+// User routes
+router.post('/users', createUser);
+router.route('/users/favorites').get(getFavorites).post(addToFavorites);
+router.delete('users/favorites/:game_id', removeFavorite);
+
+// Login routes
+router.get('/login', loginAuth);
 
 module.exports = router;

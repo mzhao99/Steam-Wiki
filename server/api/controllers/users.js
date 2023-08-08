@@ -1,25 +1,25 @@
-// Route handlers for /users endpoints  
-const express = require('express');
-const router = express.Router();
-
-// Create User
-router.post('/', (req, res) => {
+// @desc Create User
+// @route /users
+const createUser = (req, res) => {
     res.status(200).json({message: "Add new user"});
-});
+};
 
-// Get Favorites
-router.get('/favorites', (req, res) => {
+// @desc Get Favorites
+// @route /users/favorites
+const getFavorites = (req, res) => {
     res.status(200).json({message: "Get user favorite games"});
-});
+};
 
-// Add Favorites
-router.post('/favorites', (req, res) => {
+// @desc Add Favorites
+// @route /users/favorites
+const addToFavorites = (req, res) => {
     res.status(200).json({message: "Add user favorite games"});
-});
+};
 
-// Remove Favorites
-router.delete('/favorites/:game_id', (req, res) => {
-    res.status(200).json({message: "Add user favorite games"});
-});
+// @desc Remove Favorites
+// @route /users/favorites/:game_id
+const removeFavorite = (req, res) => {
+    res.status(200).json({message: "Remove user favorite games"});
+};
 
-module.exports = router;
+module.exports = { createUser, getFavorites, addToFavorites, removeFavorite };
