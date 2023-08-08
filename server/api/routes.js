@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 // Import controllers
-const { getAll, search, lookup } = require('./controllers/games');
-const { createUser, getFavorites, addToFavorites, removeFavorite } = require('./controllers/users');
-const { loginAuth } = require('./controllers/login');
+const { getAll, search, lookup } = require('./controllers/gameController');
+const { createUser, getFavorites, addToFavorites, removeFavorite } = require('./controllers/userController');
+const { loginAuth } = require('./controllers/loginController');
 
 // Game routes 
 router.get('/games', getAll);
