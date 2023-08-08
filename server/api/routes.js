@@ -3,14 +3,14 @@ const express = require('express');
 const router = express.Router();
 
 // Import controllers
-const { getAll, search, lookup } = require('./controllers/gameController');
+const { getAll, search, getOne } = require('./controllers/gameController');
 const { createUser, getFavorites, addToFavorites, removeFavorite } = require('./controllers/userController');
 const { loginAuth } = require('./controllers/loginController');
 
 // Game routes 
 router.get('/games', getAll);
 router.get('/games/search', search);
-router.get('/games/:game_id', lookup);
+router.get('/games/:game_id', getOne);
 
 // User routes
 router.post('/users', createUser);
