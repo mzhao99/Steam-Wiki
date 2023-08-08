@@ -15,7 +15,7 @@ router.get('/games/:game_id', lookup);
 // User routes
 router.post('/users', createUser);
 router.route('/users/favorites').get(getFavorites).post(addToFavorites);
-router.delete('users/favorites/:game_id', removeFavorite);
+router.delete('/users/favorites/:game_id', removeFavorite);
 
 // Login routes
 router.get('/login', loginAuth);
