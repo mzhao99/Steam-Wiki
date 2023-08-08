@@ -47,7 +47,7 @@ const addGame = asyncHandler(async (req, res) => {
 })
 
 const deleteGame = asyncHandler(async (req, res) => {
-    await Game.findByIdAndDelete(req.params.id);
+    await Game.findByIdAndDelete(req.params.game_id);
     res.status(200).json(req.params.game_id);
 });
 
