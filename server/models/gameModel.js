@@ -24,4 +24,4 @@ const gameSchema = mongoose.Schema({
     image_url: String
 });
 
-module.exports = mongoose.model('Game', gameSchema);
+module.exports = mongoose.model('Game', gameSchema, 'games_us');
