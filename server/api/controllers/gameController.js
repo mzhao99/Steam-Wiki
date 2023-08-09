@@ -41,7 +41,7 @@ const addGame = asyncHandler(async (req, res) => {
         discount_rate: body.discount_rate,
         release_date: body.release_date,
         genres: body.genres,
-        platforms: body.platform,
+        platforms: body.platforms,
         categories: body.categories,
         image_url: body.image_url
     });
