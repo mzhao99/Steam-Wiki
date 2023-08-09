@@ -21,4 +21,26 @@ const userSchema = mongoose.Schema({
     }]
 });
 
+// Find a user either by email or username
+userSchema.statics.findByLogin = async (login_credential) => {
+    // First look for a user by username
+    let user = await this.findOne({ 
+        username: login_credential,
+    });
+    // If not found, look for a user by email
+    if (!user) {
+        user = await this.findOne({ email: login_credential });
+    }
+    return user;
+};
+
+// Defines a pre 'remove' hook that handles cleaning up when a user is removed
+// userSchema.pre('remove', function(next) {
+//     this.model('Game').updateMany(
+//       { userFavorites: this._id },
+//       { $pull: { userFavorites: this._id } }
+//     );
+//     next();
+// });
+
 module.exports = mongoose.model('User', userSchema);
