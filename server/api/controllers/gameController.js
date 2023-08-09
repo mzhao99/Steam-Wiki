@@ -16,32 +16,34 @@ const getOne = asyncHandler(async (req, res) => {
     res.status(200).json(game);
 });
 
-// @desc Search Games
+// @desc Search Games by name
 // @route /games/search
 const search = asyncHandler(async (req, res) => {
     const query = {};
     if(req.query.name) {
-        query.name = { $regex: req.query.name, $options: 'i' };
+        query.name = { $regex: req.query.name, $options: 'i' };  //$options: 'i' makes it case insensitive
     }
-    if(req.query.genre) {
-        query.genre = req.query.genre;
-    }
+    // if(req.query.genre) {
+    //     query.genre = req.query.genre;
+    // }
     const games = await Game.find(query).sort({ createdAt: -1 });
     res.status(200).json(games);
 });
 
+
 const addGame = asyncHandler(async (req, res) => {
+    const body = req.body;
     const game = await Game.create({
-        game_id: req.body.game_id,
-        name: req.body.name,
-        final_price: req.body.final_price,
-        initial_price: req.body.initial_price,
-        discount_rate: req.body.discount_rate,
-        release_date: req.body.release_date,
-        genres: req.body.genres,
-        platforms: req.body.platform,
-        categories: req.body.categories,
-        image_url: req.body.image_url
+        game_id: body.game_id,
+        name: body.name,
+        final_price: body.final_price,
+        initial_price: body.initial_price,
+        discount_rate: body.discount_rate,
+        release_date: body.release_date,
+        genres: body.genres,
+        platforms: body.platform,
+        categories: body.categories,
+        image_url: body.image_url
     });
     res.status(200).json(game);
 })
