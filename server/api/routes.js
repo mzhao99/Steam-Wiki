@@ -10,7 +10,7 @@ const { loginAuth } = require('./controllers/loginController');
 // Game routes 
 router.get('/games', getAll);
 router.get('/games/search', search);
-router.get('/games/:game_id', getOne);
+router.get('/games/:_id', getOne);
 
 // User routes
 router.post('/users', createUser);

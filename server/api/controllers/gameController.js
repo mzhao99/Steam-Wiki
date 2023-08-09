@@ -12,7 +12,7 @@ const getAll = asyncHandler(async (req, res) => {
 // @desc Get One
 // @route /games/:game_id
 const getOne = asyncHandler(async (req, res) => {
-    const game = await Game.findById(req.params.game_id);
+    const game = await Game.findById(req.params._id);
     res.status(200).json(game);
 });
 

@@ -27,7 +27,7 @@ const loadGames = async (country_code) => {
                 image_url: details.header_image === undefined ? '' : details.header_image
             };
             // const newGame = await Game.create(gameData);
-            console.log(appid);
+            console.log(appid); 
             // console.log(gameData);
         }    
     }
