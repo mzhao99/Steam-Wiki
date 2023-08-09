@@ -11,11 +11,7 @@ const gameSchema = mongoose.Schema({
         type: String,
         require: true
     },
-    type: String,
-    final_price: {
-        type: Number,
-        require: true
-    },
+    final_price: Number,
     initial_price: Number,
     discount_rate: Number,
     release_date: {

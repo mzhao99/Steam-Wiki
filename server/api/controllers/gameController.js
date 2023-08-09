@@ -31,28 +31,22 @@ const search = asyncHandler(async (req, res) => {
 });
 
 
-const addGame = asyncHandler(async (req, res) => {
-    const body = req.body;
-    const game = await Game.create({
-        game_id: body.game_id,
-        name: body.name,
-        type: body.type,
-        final_price: body.final_price,
-        initial_price: body.initial_price,
-        discount_rate: body.discount_rate,
-        release_date: body.release_date,
-        genres: body.genres,
-        platforms: body.platforms,
-        categories: body.categories,
-        image_url: body.image_url
-    });
-    res.status(200).json(game);
-})
+// const addGame = asyncHandler(async (req, res) => {
+    // const body = req.body;
+    // const game = await Game.create({
+    //     game_id: body.game_id,
+    //     name: body.name,
+    //     type: body.type,
+    //     final_price: body.final_price,
+    //     initial_price: body.initial_price,
+    //     discount_rate: body.discount_rate,
+    //     release_date: body.release_date,
+    //     genres: body.genres,
+    //     platforms: body.platforms,
+    //     categories: body.categories,
+    //     image_url: body.image_url
+    // });
+    // res.status(200).json(game);
+// })
 
-const deleteGame = asyncHandler(async (req, res) => {
-    await Game.findByIdAndDelete(req.params.game_id);
-    res.status(200).json(req.params.game_id);
-});
-
-
-module.exports = { getAll, search, getOne, addGame, deleteGame };
+module.exports = { getAll, search, getOne };
