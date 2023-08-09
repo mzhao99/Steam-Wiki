@@ -11,6 +11,7 @@ const gameSchema = mongoose.Schema({
         type: String,
         require: true
     },
+    type: String,
     final_price: {
         type: Number,
         require: true

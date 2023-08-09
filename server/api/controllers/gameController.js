@@ -36,6 +36,7 @@ const addGame = asyncHandler(async (req, res) => {
     const game = await Game.create({
         game_id: body.game_id,
         name: body.name,
+        type: body.type,
         final_price: body.final_price,
         initial_price: body.initial_price,
         discount_rate: body.discount_rate,

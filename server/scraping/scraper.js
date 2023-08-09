@@ -1,1 +1,0 @@
-// Script to scrape game data
