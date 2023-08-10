@@ -5,11 +5,12 @@ const loadGames = async (country_code) => {
     // const gamesResponse = await response.json();
     // const games = gamesResponse.applist.apps.app;
 
-    for (let counter = 23160; counter < 25000; counter ++) {
+    for (let counter = 46850; counter < 100000; counter ++) {
+        // console.log("counter: " + counter);
         const appid = counter;
         const response = await fetch(`http://store.steampowered.com/api/appdetails?appids=${appid}&cc=${country_code}`);
         const game = await response.json();
-        
+    
         // Save details to database
         if (game != null && game[appid].success){
             const details = game[appid].data;
@@ -26,9 +27,13 @@ const loadGames = async (country_code) => {
                 categories: details.categories === undefined ? [] : details.categories.map(e => e.description),
                 image_url: details.header_image === undefined ? '' : details.header_image
             };
-            // const newGame = await Game.create(gameData);
+            try{
+                const newGame = await Game.create(gameData);
+            }catch(e){
+                console.log("counter: " + counter);
+                console.log(e);
+            }
             console.log(appid); 
-            // console.log(gameData);
         }    
     }
     console.log('Finished');
