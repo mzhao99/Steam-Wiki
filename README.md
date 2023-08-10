@@ -1,5 +1,9 @@
-# Steam-Game-Price-Tracker
+# Steam-Wiki
 MERN Full Stack Application
+
+A website that shows all the info of the games available on Steam.
+
+To run the project: 
 
 In server folder
 - npm install
