@@ -5,7 +5,7 @@ const loadGames = async (country_code) => {
     // const gamesResponse = await response.json();
     // const games = gamesResponse.applist.apps.app;
 
-    for (let counter = 46850; counter < 100000; counter ++) {
+    for (let counter = 63110; counter < 100000; counter ++) {
         // console.log("counter: " + counter);
         const appid = counter;
         const response = await fetch(`http://store.steampowered.com/api/appdetails?appids=${appid}&cc=${country_code}`);
@@ -19,8 +19,8 @@ const loadGames = async (country_code) => {
                 name: details.name,
                 type: details.type,
                 final_price: details.is_free || details.price_overview === undefined ? 0 : details.price_overview.final,
-                initial_price: details.is_free || details.initial_price === undefined ? 0 : details.price_overview.initial,
-                discount_rate: details.is_free || details.discount_rate === undefined ? 0 : details.price_overview.discount_percent,
+                initial_price: details.is_free || details.price_overview === undefined ? 0 : details.price_overview.initial,
+                discount_rate: details.is_free || details.price_overview === undefined ? 0 : details.price_overview.discount_percent,
                 release_date: details.release_date.coming_soon === false ? details.release_date.date : "Coming Soon",
                 genres: details.genres === undefined ? [] : details.genres.map(e => e.description),
                 platforms: details.platforms === undefined ? [] : Object.keys(details.platforms).filter(key => details.platforms[key]),
