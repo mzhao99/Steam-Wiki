@@ -5,7 +5,7 @@ const loadGames = async (country_code) => {
     // const gamesResponse = await response.json();
     // const games = gamesResponse.applist.apps.app;
 
-    for (let counter = 63110; counter < 100000; counter ++) {
+    for (let counter = 50000; counter <= 60000; counter += 1) {
         // console.log("counter: " + counter);
         const appid = counter;
         const response = await fetch(`http://store.steampowered.com/api/appdetails?appids=${appid}&cc=${country_code}`);
