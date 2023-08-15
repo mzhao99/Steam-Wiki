@@ -23,7 +23,7 @@ const routes = require('./api/routes');
 app.use(routes);
 
 // Use error handler
-const { errorHandler } = require('./middleware/errorMiddleware');
+const { errorHandler } = require('./middlewares/errorMiddleware');
 app.use(errorHandler);
 
 // Start Server
