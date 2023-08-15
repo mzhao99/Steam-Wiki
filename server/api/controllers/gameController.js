@@ -6,7 +6,7 @@ const Game = require('../../models/gameModel');
 // @route /games
 const getAll = asyncHandler(async (req, res, next) => {
     const games = await Game.find({});
-    if(!games) {
+    if(!games || games.length === 0) {
         return next(new Error('No Games Found', 404));
     }
     res.status(200).json(games);
@@ -34,7 +34,7 @@ const search = asyncHandler(async (req, res, next) => {
     //     query.genre = genre;
     // }
     const games = await Game.find(query).sort({ createdAt: -1 });
-    if (!games){
+    if (!games || games.length === 0){
         return next(new Error('No Games Found', 404)); 
     }    
     res.status(200).json(games);
