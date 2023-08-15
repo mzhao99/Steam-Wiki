@@ -1,11 +1,7 @@
 const Game = require('../../models/gameModel');
 
 const loadGames = async (country_code) => {
-    // const response = await fetch('http://api.steampowered.com/ISteamApps/GetAppList/v0001/');
-    // const gamesResponse = await response.json();
-    // const games = gamesResponse.applist.apps.app;
-
-    for (let counter = 50000; counter <= 60000; counter += 1) {
+    for (let counter = 92100; counter <= 100000; counter += 1) {
         // console.log("counter: " + counter);
         const appid = counter;
         const response = await fetch(`http://store.steampowered.com/api/appdetails?appids=${appid}&cc=${country_code}`);
