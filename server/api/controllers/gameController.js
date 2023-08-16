@@ -33,7 +33,7 @@ const search = asyncHandler(async (req, res, next) => {
     // if(genre) {
     //     query.genre = genre;
     // }
-    const games = await Game.find(query).sort({ createdAt: -1 });
+    const games = await Game.find(query);
     if (!games || games.length === 0){
         return next(new Error('No Games Found', 404)); 
     }    
