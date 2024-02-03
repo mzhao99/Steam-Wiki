@@ -4,7 +4,7 @@ const User = require('../../models/userModel');
 
 // @desc Create User
 // @route /signUp
-const signUp = asyncHandler(async(req, res) => {
+const signUp = asyncHandler(async(req, res, next) => {
     const body = req.body;
     try {
         const user = await User.create({
@@ -15,7 +15,7 @@ const signUp = asyncHandler(async(req, res) => {
         });
         res.status(200).json("User created successfully");
     } catch(error) {
-        res.status(500).json(error.message);
+        next(error);
     }
 });
 
