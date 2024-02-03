@@ -21,6 +21,7 @@ const routes = require('./api/routes');
 
 // Use routes
 app.use(routes);
+// app.use('/api/user', userRouter)
 
 // Use error handler
 const { errorHandler } = require('./middlewares/errorMiddleware');
