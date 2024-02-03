@@ -13,13 +13,14 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         require: true
     },
     favorites: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Game'
     }]
-});
+}, {timestamps: true });
 
 // Find a user either by email or username
 userSchema.statics.findByLogin = async (login_credential) => {
