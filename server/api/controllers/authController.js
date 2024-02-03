@@ -41,9 +41,12 @@ const signIn = asyncHandler(async(req, res, next) => {
         // login
         const token = jwt.sign({ id: validUser._id },  process.env.JWT_SECRET)
         const { password: pass, ...rest } = validUser._doc      // separate password from the rest so that it does not gets send back to the user
-        res.cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 24 * 60 * 60 * 1000)})
-            .status(200)
-            .json(rest)     // rest of the data except for the password
+        res.cookie('access_token', token, { 
+            httpOnly: true, 
+            // expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
+        })
+        .status(200)
+        .json(rest)     // rest of the data except for the password
     } catch(error) {
         next(error);
     }
