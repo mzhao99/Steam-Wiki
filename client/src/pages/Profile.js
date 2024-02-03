@@ -51,7 +51,62 @@ export default function Profile() {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     };
     
-
+    // form update submission
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         dispatch(updateUserStart());
+    //         const res = await fetch(`/api/user/update/${currentUser._id}`, {
+    //             method: 'POST',
+    //             headers: {
+    //             'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(formData),
+    //         });
+    //         const data = await res.json();
+    //         if (data.success === false) {
+    //             dispatch(updateUserFailure(data.message));
+    //             return;
+    //         }
+        
+    //         dispatch(updateUserSuccess(data));
+    //         setUpdateSuccess(true);
+    //     } catch (error) {
+    //         dispatch(updateUserFailure(error.message));
+    //     }
+    // };
+    
+    // const handleDeleteUser = async () => {
+    //     try {
+    //         dispatch(deleteUserStart());
+    //         const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+    //             method: 'DELETE',
+    //         });
+    //         const data = await res.json();
+    //         if (data.success === false) {
+    //             dispatch(deleteUserFailure(data.message));
+    //             return;
+    //         }
+    //         dispatch(deleteUserSuccess(data));
+    //     } catch (error) {
+    //         dispatch(deleteUserFailure(error.message));
+    //     }
+    // };
+    
+    // const handleSignOut = async () => {
+    //     try {
+    //         dispatch(signOutUserStart());
+    //         const res = await fetch('/api/auth/signout');
+    //         const data = await res.json();
+    //         if (data.success === false) {
+    //             dispatch(deleteUserFailure(data.message));
+    //             return;
+    //         }
+    //         dispatch(deleteUserSuccess(data));
+    //     } catch (error) {
+    //         dispatch(deleteUserFailure(data.message));
+    //     }
+    // };
 
     return (
         <div className='p-3 max-w-lg mx-auto'>
@@ -73,8 +128,8 @@ export default function Profile() {
                     )}
                 </p>
                 
+                <input type='email' placeholder='Email' id='email' defaultValue={currentUser.email} disabled className='border p-3 rounded-lg' />
                 <input type='text' placeholder='Username' defaultValue={currentUser.username} id='username' className='border p-3 rounded-lg' />
-                <input type='email' placeholder='Email' id='email' defaultValue={currentUser.email} className='border p-3 rounded-lg' />
                 <input type='password' placeholder='Password' id='password' className='border p-3 rounded-lg' />
                 <button disabled={loading} className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80' >
                     {loading ? 'Loading...' : 'Update'}

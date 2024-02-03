@@ -1,6 +1,7 @@
 // Entry point, starts Express app
 const express = require('express');
 const dotenv = require('dotenv').config({path: '../.env'});
+const cookieParser = require('cookie-parser');
 
 // Create express app
 const app = express();
@@ -21,6 +22,7 @@ const routes = require('./api/routes');
 
 // Use routes
 app.use(routes);
+app.use(cookieParser())
 // app.use('/api/user', userRouter)
 
 // Use error handler

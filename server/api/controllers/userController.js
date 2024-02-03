@@ -1,9 +1,39 @@
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
 const User = require('../../models/userModel');
+const bcryptjs = require('bcryptjs');
+
+// @desc Update user info
+// @route /user/update/:id
+const updateUser = asyncHandler(async (req, res, next) => {
+    if (req.user.id !== req.params.id)      return next(error);
+    try {
+        if (req.body.password) {
+            req.body.password = bcryptjs.hashSync(req.body.password, 10);
+        }
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id, 
+            {
+                $set: {
+                    username: req.body.username,
+                    email: req.body.email,
+                    password: req.body.password,
+                    avatar: req.body.avatar,
+                },
+            },
+            { 
+                new: true 
+            }
+        );
+        const { password, ...rest } = updatedUser._doc;
+        res.status(200).json(rest);
+    } catch (error) {
+        next(error);
+    }
+})
 
 // @desc Get Favorites
-// @route /users/favorites
+// @route /user/favorites
 const getFavorites = asyncHandler(async (req, res) => {
     const user_id = req.body.username;
     try {
@@ -20,15 +50,15 @@ const getFavorites = asyncHandler(async (req, res) => {
 });
 
 // @desc Add Favorites
-// @route /users/favorites
+// @route /user/favorites
 const addToFavorites = asyncHandler(async (req, res) => {
     res.status(200).json({message: "Add user favorite games"});
 });
 
 // @desc Remove Favorites
-// @route /users/favorites/:game_id
+// @route /user/favorites/:game_id
 const removeFavorite = asyncHandler(async (req, res) => {
     res.status(200).json({message: "Remove user favorite games"});
 });
 
-module.exports = { getFavorites, addToFavorites, removeFavorite };
+module.exports = { updateUser, getFavorites, addToFavorites, removeFavorite };
