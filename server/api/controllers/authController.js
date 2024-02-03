@@ -13,7 +13,7 @@ const signUp = asyncHandler(async(req, res, next) => {
             username: body.username,
             password: bcryptjs.hashSync(body.password, 10),
             email: body.email,
-            favorites: body.favorites
+            favorites: body.favorites,
         });
         res.status(200).json("User created successfully");
     } catch(error) {
@@ -52,4 +52,39 @@ const signIn = asyncHandler(async(req, res, next) => {
     }
 })
 
-module.exports = { signUp, signIn }
+const google = asyncHandler(async(req, res, next) => {
+    const body = req.body;
+    try {
+        // check if user exists or not
+        const user = await User.findOne({email: body.email})
+        if (user) {     // user exists
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+            const { password: pass, ...rest} = user._doc
+            res
+                .cookie('access_token', token, { httpOnly: true })
+                .status(200)
+                .json(rest)
+        } else {    // register new user
+            // create a random password
+            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
+            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
+            const newUser = await User.create({
+                email: body.email,
+                username: body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4),
+                password: hashedPassword,
+                avatar: body.photo
+            })
+
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
+            const { password: pass, ...rest} = newUser._doc
+            res
+                .cookie('access_token', token, { httpOnly: true })
+                .status(200)
+                .json(rest)
+        }
+    } catch (error) {
+        next(error)
+    }
+})
+
+module.exports = { signUp, signIn, google }
