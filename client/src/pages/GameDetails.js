@@ -38,24 +38,32 @@ export default function GameDetails() {
                 <img src={game.image_url} alt={game.name} className="w-full object-cover h-96 rounded-[20px]" />
                 <div className="mt-6 pl-10 pb-8">
                     <h1 className="text-3xl font-bold text-slate-700">{game.name}</h1>
+
                     <p className="mt-2 text-lg text-slate-700">Release Date: <strong>{game.release_date || "Unavailable"}</strong></p>
+
                     <div className="text-lg text-slate-700"><p>Genres:</p>
-                        {game.genres.length > 0 ? game.genres.map(genre => (
+                        {game.genres?.length > 0 && game.genres.map(genre => (
                             <span className="mr-2 inline-block bg-blue-200 text-blue-800 text-sm px-2 rounded-full" key={genre}>{genre}</span>
-                        )) : <span className="mr-2 inline-block bg-blue-200 text-blue-800 text-sm px-2 rounded-full">N/A</span>}
+                        ))}
+                        {(!game.genres || game.genres.length === 0) && <span className="mr-2 inline-block bg-blue-200 text-blue-800 text-sm px-2 rounded-full">N/A</span>}
                     </div>
+
                     <div className="text-lg text-slate-700"><p>Platforms:</p>
-                        {game.platforms.length > 0 ? game.platforms.map(platform => (
+                        {game.platforms?.length > 0 && game.platforms.map(platform => (
                             <span className="mr-2 inline-block bg-teal-200 text-teal-800 text-sm px-2 rounded-full" key={platform}>
                                 {platform.charAt(0).toUpperCase() + platform.slice(1)}
                             </span>
-                        )): <span className="mr-2 inline-block bg-teal-200 text-teal-800 text-sm px-2 rounded-full">N/A</span>}
+                        ))}
+                        {(!game.platforms || game.platforms.length === 0) && <span className="mr-2 inline-block bg-teal-200 text-teal-800 text-sm px-2 rounded-full">N/A</span>}
                     </div>
+
                     <div className="text-lg text-slate-700"><p>Categories:</p>
-                        {game.categories.length > 0 ? game.categories.map(category => (
+                        {game.categories?.length > 0 && game.categories.map(category => (
                             <span className="mr-2 inline-block bg-purple-200 text-purple-800 text-sm px-2 rounded-full" key={category}>{category}</span>
-                        )) : <span className="mr-2 inline-block bg-purple-200 text-purple-800 text-sm px-2 rounded-full">N/A</span>}
+                        ))}
+                        {(!game.categories || game.categories.length === 0) && <span className="mr-2 inline-block bg-purple-200 text-purple-800 text-sm px-2 rounded-full">N/A</span>}
                     </div>
+
                     <div className="mt-4 text-slate-700">
                         <p className="text-lg">Initial Price: <strong>{game.initial_price === 0 ? "Free" : `$${game.initial_price / 100}`}</strong></p>
                         <p className="text-lg">Final Price: <strong>{game.final_price === 0 ? "Free" : `$${game.final_price / 100}`}</strong></p>

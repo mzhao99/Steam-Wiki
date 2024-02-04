@@ -1,12 +1,26 @@
 const Game = require('../../models/gameModel');
 
 const loadGames = async (country_code) => {
-    for (let counter = 113000; counter <= 2400000; counter += 1) {
+    for (let counter = 2447170; counter >= 113000; counter -= 1) {
         // console.log("counter: " + counter);
         const appid = counter;
         const response = await fetch(`http://store.steampowered.com/api/appdetails?appids=${appid}&cc=${country_code}`);
+
+        // Check if the response status is not OK (e.g., 404, 503, etc.)
+        if (!response.ok) {
+            console.log(`Error for appid ${appid}, Status: ${response.status}`);
+            continue; // Skip this iteration and proceed to the next one
+        }
+
+        // Check the content type of the response
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            console.log(`Unexpected content type for appid ${appid}: ${contentType}`);
+            continue; // Skip this iteration and proceed to the next one
+        }
+
         const game = await response.json();
-    
+
         // Save details to database
         if (game != null && game[appid].success){
             const details = game[appid].data;

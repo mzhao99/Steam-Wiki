@@ -23,7 +23,7 @@ const getOne = asyncHandler(async (req, res, next) => {
 });
 
 // @desc Search games by title
-// @route /games/search?title=..&genre=..
+// @route /search?name=..&genre=..
 const search = asyncHandler(async (req, res, next) => {
     try {
         const limit = parseInt(req.query.limit) || 9;
