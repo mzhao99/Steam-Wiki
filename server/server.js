@@ -21,8 +21,8 @@ const { loadGames } = require('./api/controllers/setupController');
 const routes = require('./api/routes'); 
 
 // Use routes
-app.use(routes);
 app.use(cookieParser())
+app.use(routes);
 // app.use('/api/user', userRouter)
 
 // Use error handler
