@@ -11,7 +11,7 @@ const { verifyToken } = require('../middlewares/verifyUser')
 // Game routes 
 router.get('/games', getAll);
 router.get('/games/search', search);
-router.get('/games/:_id', getOne);
+router.get('/games/:gameId', getOne);
 
 // User routes
 router.post('/user/update/:id', verifyToken, updateUser)

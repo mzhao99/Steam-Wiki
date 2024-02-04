@@ -14,10 +14,7 @@ const gameSchema = mongoose.Schema({
     final_price: Number,
     initial_price: Number,
     discount_rate: Number,
-    release_date: {
-        type: String,
-        require: true
-    },
+    release_date: String,
     genres: [String],
     platforms: [String],
     categories: [String],

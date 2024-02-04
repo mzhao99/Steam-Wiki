@@ -7,6 +7,7 @@ import SignIn from "./pages/SignIn";
 import Profile from "./pages/Profile";
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
+import GameDetails from "./pages/GameDetails";
 
 export const CurrencyContext = React.createContext(null);
 
@@ -39,11 +40,12 @@ function App() {
         <BrowserRouter>
             <Header />
             <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route path="/sign-in" element={<SignIn />}></Route>
-                <Route path="/sign-up" element={<Signout />}></Route>
+                <Route path="/" element={<Home />} />
+                <Route path="/sign-in" element={<SignIn />} />
+                <Route path="/sign-up" element={<Signout />} />
+                <Route path="/games/:gameId" element={<GameDetails />} />
                 <Route element={<PrivateRoute />}>
-                    <Route path="/profile" element={<Profile />}></Route>
+                    <Route path="/profile" element={<Profile />} />
                 </Route>
             </Routes>
         </BrowserRouter>

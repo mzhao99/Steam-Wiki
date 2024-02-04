@@ -13,9 +13,9 @@ const getAll = asyncHandler(async (req, res, next) => {
 });
 
 // @desc Get One
-// @route /games/:game_id
+// @route /games/:gameId
 const getOne = asyncHandler(async (req, res, next) => {
-    const game = await Game.findById(req.params._id);
+    const game = await Game.findById(req.params.gameId);
     if (!game){
         return next(new Error('Game Not Found', 404)); 
     }
