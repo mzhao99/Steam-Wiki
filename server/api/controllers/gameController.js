@@ -28,10 +28,11 @@ const search = asyncHandler(async (req, res, next) => {
     try {
         const limit = parseInt(req.query.limit) || 9;
         const startIndex = parseInt(req.query.startIndex) || 0;
-        const { type, tag, platforms, searchTerm, sort = 'createdAt', order = 'desc' } = req.query;
+        const { type, genres, platforms, categories, searchTerm, sort = 'createdAt', order = 'desc' } = req.query;
         const queryFilters = {};
-        if (tag)    queryFilters.genres = { $in: tag.split(",") };
+        if (genres)    queryFilters.genres = { $in: genres.split(",") };
         if (platforms)    queryFilters.platforms = { $in: platforms.split(",") };
+        if (categories)    queryFilters.categories = { $in: categories.split(",") }
         if (searchTerm)   queryFilters.name = { $regex: searchTerm, $options: 'i' };
     
         if (type === 'sale_and_recent') {
@@ -44,7 +45,7 @@ const search = asyncHandler(async (req, res, next) => {
         }
 
         // Sale: discount rate > 0
-        if (type === 'sale') queryFilters.discount_rate = { $gt: 0 };
+        if (type === 'sale')    queryFilters.discount_rate = { $gt: 0 };
     
         // Recently Released: released in the past month
         if (type === 'recent') {
