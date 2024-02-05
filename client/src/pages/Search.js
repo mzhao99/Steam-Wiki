@@ -119,6 +119,21 @@ export default function Search() {
         navigate(`/search?${searchQuery}`);
     }
 
+    const onShowMoreClick = async () => {
+        const numberOfGames = games.length;
+        const startIndex = numberOfGames;
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('startIndex', startIndex);
+
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/search?${searchQuery}`);
+        const data = await res.json();
+        if (data.length < 9) {
+            setShowMore(false);
+        }
+        setGames([...games, ...data]);
+    }
+
     return (
         <div className="flex flex-col md:flex-row">
             <div className="p-7 border-b-2 sm:border-r-2 md:min-h-screen">
@@ -320,6 +335,12 @@ export default function Search() {
                     {!loading && games && games.map((game) => (
                         <GameItem key={game._id} game={game} />
                     ))}
+                    {/* Show more button */}
+                    {showMore && (
+                        <button onClick={onShowMoreClick} className='text-green-700 hover:underline p-7 text-center w-full'>
+                            Show more
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
