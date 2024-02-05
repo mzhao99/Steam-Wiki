@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
+import GameItem from '../components/GameItem';
 
 export default function Search() {
     const navigate = useNavigate();
@@ -304,8 +305,22 @@ export default function Search() {
                 </form>
             </div>
 
-            <div className=''>
-                <h1 className='text-3xl font-semibold border-b p-3 text-slate-700 mt-5'>Listing results:</h1>
+            <div className='flex-1'>
+                <h1 className='text-3xl font-semibold border-b p-3 pl-7 text-slate-700 mt-5'>Search Results</h1>
+                <div className='p-7 flex flex-wrap gap-4'>
+                    {/* No game found */}
+                    {!loading && games.length === 0 && (
+                        <p className='text-xl text-slate-700'>No game found!</p>
+                    )}
+                    {/* Loading effect */}
+                    {loading && (
+                        <p className='text-xl text-slate-700 text-center w-full'>Loading...</p>
+                    )}
+                    {/* Show the games */}
+                    {!loading && games && games.map((game) => (
+                        <GameItem key={game._id} game={game} />
+                    ))}
+                </div>
             </div>
         </div>
     )
