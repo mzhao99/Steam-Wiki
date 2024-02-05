@@ -80,25 +80,25 @@ const search = asyncHandler(async (req, res, next) => {
             queryFilters.categories = { $in: mappedCategories };
         }
 
-        if (type === 'sale_recent') {
-            queryFilters.discount_rate = { $gt: 0 };
+        // if (type === 'sale_recent') {
+        //     queryFilters.discount_rate = { $gt: 0 };
         
-            const oneMonthAgo = new Date();
-            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-            const oneMonthAgoFormatted = oneMonthAgo.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
-            queryFilters.release_date = { $gte: oneMonthAgoFormatted };
-        }
+        //     const oneMonthAgo = new Date();
+        //     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+        //     const oneMonthAgoFormatted = oneMonthAgo.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+        //     queryFilters.release_date = { $gte: oneMonthAgoFormatted };
+        // }
 
         // // Sale: discount rate > 0
         if (type === 'sale')    queryFilters.discount_rate = { $gt: 0 };
     
         // Recently Released: released in the past 3 months
-        if (type === 'recent') {
-            const threeMonthsAgo = new Date();
-            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-            const threeMonthsAgoFormatted = threeMonthsAgo.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
-            queryFilters.release_date = { $gte: threeMonthsAgoFormatted };
-        }
+        // if (type === 'recent') {
+        //     const threeMonthsAgo = new Date();
+        //     threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+        //     const threeMonthsAgoFormatted = threeMonthsAgo.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+        //     queryFilters.release_date = { $gte: threeMonthsAgoFormatted };
+        // }
     
         const sortBy = (function() {
             switch (sort) {
@@ -110,6 +110,66 @@ const search = asyncHandler(async (req, res, next) => {
                     return sort;
             }
         })();
+
+        // const pipeline = [
+        //     { $match: queryFilters },
+        //     {
+        //         $addFields: {
+        //           splitDate: { $split: ["$release_date", ", "] }
+        //         }
+        //       },
+        //     {
+        //         $addFields: {
+        //             // Further split the first part of the date to isolate month and day
+        //             monthDay: { $split: [{ $arrayElemAt: ["$splitDate", 0] }, " "] },
+        //             year: { $arrayElemAt: ["$splitDate", 1] } // Second part is the year
+        //         }
+        //     },
+        //     {
+        //         $addFields: {
+        //             month: { $arrayElemAt: ["$monthDay", 0] }, // Month is the first element
+        //             day: { $arrayElemAt: ["$monthDay", 1] }, // Day is the second element
+        //             monthNum: {
+        //                 $switch: {
+        //                     branches: [
+        //                         { case: { $eq: ["$month", "Jan"] }, then: "01" },
+        //                         { case: { $eq: ["$month", "Feb"] }, then: "02" },
+        //                         { case: { $eq: ["$month", "Mar"] }, then: "03" },
+        //                         { case: { $eq: ["$month", "Apr"] }, then: "04" },
+        //                         { case: { $eq: ["$month", "May"] }, then: "05" },
+        //                         { case: { $eq: ["$month", "Jun"] }, then: "06" },
+        //                         { case: { $eq: ["$month", "Jul"] }, then: "07" },
+        //                         { case: { $eq: ["$month", "Aug"] }, then: "08" },
+        //                         { case: { $eq: ["$month", "Sep"] }, then: "09" },
+        //                         { case: { $eq: ["$month", "Oct"] }, then: "10" },
+        //                         { case: { $eq: ["$month", "Nov"] }, then: "11" },
+        //                         { case: { $eq: ["$month", "Dec"] }, then: "12" },
+        //                     ],
+        //                     default: "01" 
+        //                 }
+        //             }
+        //         }
+        //     },
+        //     // Add a field 'convertedReleaseDate' by converting 'release_date' from string to date
+        //     { $addFields: {
+        //         convertedReleaseDate: { 
+        //           $dateFromString: { 
+        //             dateString: { $concat: ["$year", "-", "$monthNum", "-", "$day"] },
+        //             format: "%Y-%m-%d"
+        //           } 
+        //         }
+        //     }},
+        //     { $skip: startIndex },
+        //     { $limit: limit }
+        // ];
+
+        // // Add sorting to the pipeline if sorting by 'createat'
+        // if (sort === 'createat') {
+        //     const sortOrder = order === 'desc' ? -1 : 1;
+        //     pipeline.push({ $sort: { convertedReleaseDate: sortOrder } });
+        // }
+
+        // const games = await Game.aggregate(pipeline).catch(next);
 
         const games = await Game.find(queryFilters)
                                 .sort({ [sortBy]: order === 'desc' ? -1 : 1 })

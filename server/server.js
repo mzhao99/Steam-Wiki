@@ -10,12 +10,12 @@ const app = express();
 app.use(express.json()); 
 
 // Connect to MongoDB
-const connectDB = require('./config/db');
+const { connectDB } = require('./config/db');
 connectDB();
 
 // Request data from API and store in DB
 const { loadGames } = require('./api/controllers/setupController');
-loadGames('us');
+// loadGames('us');
 
 // Require routes.js
 const routes = require('./api/routes'); 

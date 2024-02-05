@@ -18,7 +18,8 @@ const gameSchema = mongoose.Schema({
     genres: [String],
     platforms: [String],
     categories: [String],
-    image_url: String
+    image_url: String,
+    newReleaseDate: Date
 });
 
 module.exports = mongoose.model('Game', gameSchema, 'games_us');
