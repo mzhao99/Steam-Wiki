@@ -15,7 +15,7 @@ connectDB();
 
 // Request data from API and store in DB
 const { loadGames } = require('./api/controllers/setupController');
-// loadGames('us');
+loadGames('us');
 
 // Require routes.js
 const routes = require('./api/routes'); 
