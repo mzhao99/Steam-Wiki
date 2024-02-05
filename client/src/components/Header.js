@@ -27,7 +27,7 @@ export default function Header() {
 
     return (
         <header className='bg-slate-200 shadow-md'>
-            <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
+            <div className='flex justify-between items-center max-w-full mx-auto py-3 px-10'>
                 <Link to='/' className='no-underline'>
                     <h1 className='font-bold text-sm sm:text-xl flex flex-wrap m-0'>
                         <span className='text-slate-500'>Steam</span>
