@@ -2,15 +2,15 @@ const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
 const Game = require('../../models/gameModel');
 
-// @desc Get All
-// @route /games
-const getAll = asyncHandler(async (req, res, next) => {
-    const games = await Game.find({});
-    if(!games || games.length === 0) {
-        return next(new Error('No Games Found', 404));
-    }
-    res.status(200).json(games);
-});
+// @desc Get all games
+// @route /all-games
+// const getAll = asyncHandler(async (req, res, next) => {
+//     const games = await Game.find({});
+//     if(!games || games.length === 0) {
+//         return next(new Error('No Games Found', 404));
+//     }
+//     res.status(200).json(games);
+// });
 
 // @desc Get One
 // @route /games/:gameId
@@ -28,14 +28,59 @@ const search = asyncHandler(async (req, res, next) => {
     try {
         const limit = parseInt(req.query.limit) || 9;
         const startIndex = parseInt(req.query.startIndex) || 0;
-        const { type, genres, platforms, categories, searchTerm, sort = 'createdAt', order = 'desc' } = req.query;
+        const { type, genres, platforms, categories, searchTerm, sort, order } = req.query;
         const queryFilters = {};
-        if (genres)    queryFilters.genres = { $in: genres.split(",") };
-        if (platforms)    queryFilters.platforms = { $in: platforms.split(",") };
-        if (categories)    queryFilters.categories = { $in: categories.split(",") }
+
         if (searchTerm)   queryFilters.name = { $regex: searchTerm, $options: 'i' };
-    
-        if (type === 'sale_and_recent') {
+        if (platforms)    queryFilters.platforms = { $in: platforms };
+        // Ensure 'genres' is treated as an array and map the corresponding name as in the database
+        let genresArray = [];
+        if (Array.isArray(req.query.genres)) {
+            genresArray = req.query.genres;
+        } else if (typeof req.query.genres === 'string') {
+            genresArray = [req.query.genres];
+        }
+        if (genres) {
+            const mappedGenres = genresArray.map(genre => {
+                switch (genre) {
+                    case 'indie':
+                        return 'Indie';
+                    case 'strategy':
+                        return 'Strategy'; 
+                    case 'action':
+                        return 'Action'; 
+                    case 'adventure':
+                        return 'Adventure'; 
+                    case 'rpg':
+                        return 'RPG'; 
+                    default:
+                        return genre; 
+                }
+            });
+            queryFilters.genres = { $in: mappedGenres };
+        }
+        // Ensure 'categories' is treated as an array and map the corresponding name as in the database
+        let categoriesArray = [];
+        if (Array.isArray(req.query.categories)) {
+            categoriesArray = req.query.categories;
+        } else if (typeof req.query.categories === 'string') {
+            categoriesArray = [req.query.categories];
+        }
+        if (categories) {
+            const mappedCategories = categoriesArray.map(category => {
+                switch (category) {
+                    case 'single':
+                        return 'Single-player';
+                    case 'multi':
+                        return 'Multi-player'; 
+                    default:
+                        return category; 
+                }
+            });
+            queryFilters.categories = { $in: mappedCategories };
+        }
+
+        if (type === 'sale_recent') {
             queryFilters.discount_rate = { $gt: 0 };
         
             const oneMonthAgo = new Date();
@@ -44,20 +89,30 @@ const search = asyncHandler(async (req, res, next) => {
             queryFilters.release_date = { $gte: oneMonthAgoFormatted };
         }
 
-        // Sale: discount rate > 0
+        // // Sale: discount rate > 0
         if (type === 'sale')    queryFilters.discount_rate = { $gt: 0 };
     
-        // Recently Released: released in the past month
+        // Recently Released: released in the past 3 months
         if (type === 'recent') {
-            const oneMonthAgo = new Date();
-            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-            const oneMonthAgoFormatted = oneMonthAgo.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
-          
-            queryFilters.release_date = { $gte: oneMonthAgoFormatted };
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            const threeMonthsAgoFormatted = threeMonthsAgo.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+            queryFilters.release_date = { $gte: threeMonthsAgoFormatted };
         }
     
+        const sortBy = (function() {
+            switch (sort) {
+                case 'createat':
+                    return 'release_date';
+                case 'price':
+                    return 'final_price';
+                default:
+                    return sort;
+            }
+        })();
+
         const games = await Game.find(queryFilters)
-                                .sort({ [sort]: order === 'desc' ? -1 : 1 })
+                                .sort({ [sortBy]: order === 'desc' ? -1 : 1 })
                                 .limit(limit)
                                 .skip(startIndex)
                                 .catch(next);
@@ -67,5 +122,4 @@ const search = asyncHandler(async (req, res, next) => {
       }
 });
 
-
-module.exports = { getAll, search, getOne };
+module.exports = { search, getOne };

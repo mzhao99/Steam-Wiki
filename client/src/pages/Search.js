@@ -7,7 +7,6 @@ export default function Search() {
     const [loading, setLoading] = useState(false)
     const [showMore, setShowMore] = useState(false)
     const [games, setGames] = useState([])
-
     const [sidebarData, setSidebarData] = useState({
         searchTerm: '',
         type: '',
@@ -17,6 +16,8 @@ export default function Search() {
         sort: 'createdAt', 
         order: 'desc'
     })
+
+    // console.log(games)
 
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
@@ -38,7 +39,7 @@ export default function Search() {
             setLoading(true);
             setShowMore(false);
             const searchQuery = urlParams.toString();
-            const res = await fetch(`/games?${searchQuery}`);
+            const res = await fetch(`/search?${searchQuery}`);
             const data = await res.json();
             if (data.length > 8) {
               setShowMore(true);
@@ -48,9 +49,7 @@ export default function Search() {
             setGames(data);
             setLoading(false);
         };
-      
         fetchGames();
-
     }, [location.search]);
 
     console.log(sidebarData)
