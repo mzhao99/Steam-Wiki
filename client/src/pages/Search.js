@@ -120,18 +120,36 @@ export default function Search() {
     }
 
     const onShowMoreClick = async () => {
-        const numberOfGames = games.length;
-        const startIndex = numberOfGames;
-        const urlParams = new URLSearchParams(location.search);
-        urlParams.set('startIndex', startIndex);
-
-        const searchQuery = urlParams.toString();
-        const res = await fetch(`/search?${searchQuery}`);
-        const data = await res.json();
-        if (data.length < 9) {
-            setShowMore(false);
+        let additionalGamesNeeded = 9;
+        let newGames = [];
+        let attempts = 0;
+        const maxAttempts = 5; // Prevent infinite loops
+        let lastIndex = games.length;
+    
+        while (newGames.length < additionalGamesNeeded && attempts < maxAttempts) {
+            const urlParams = new URLSearchParams(location.search);
+            urlParams.set('startIndex', lastIndex);  // Start from the last index of currently loaded games
+            urlParams.set('limit', additionalGamesNeeded * 2); // Fetch twice the needed amount to account for potential duplicates
+            const searchQuery = urlParams.toString();
+            const res = await fetch(`/search?${searchQuery}`);
+            const data = await res.json();
+    
+            // Filter out duplicates
+            const uniqueNewGames = data.filter(game => !games.some(g => g._id === game._id));
+            // Add the unique new games to the newGames array
+            newGames = [...newGames, ...uniqueNewGames].slice(0, additionalGamesNeeded);
+            // Update lastIndex for the next iteration
+            lastIndex += additionalGamesNeeded * 2;
+            // Increment the attempts counter
+            attempts++;
+    
+            if (data.length < additionalGamesNeeded * 2) {
+                setShowMore(false);    // No more data to fetch
+                break;     // Exit the loop if we fetched all remaining data but it's still less than needed
+            }
         }
-        setGames([...games, ...data]);
+        // Update the games state with new unique games
+        setGames(prevGames => [...prevGames, ...newGames]);
     }
 
     return (
